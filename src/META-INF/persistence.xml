@@ -5,10 +5,10 @@
     <class>BLL.Bookshelf</class>
     <class>BLL.Book</class>
     <class>BLL.Rent</class>
-    <class>BLL.Rentqueue</class>
     <class>BLL.Shelf</class>
     <class>BLL.User</class>
     <class>BLL.Event</class>
+    <class>BLL.RentQueue</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/library?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

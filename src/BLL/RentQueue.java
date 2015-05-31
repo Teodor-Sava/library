@@ -8,18 +8,16 @@ package BLL;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,13 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Live
  */
 @Entity
-@Table(name = "shelf", catalog = "library", schema = "")
+@Table(name = "rentqueue", catalog = "library", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Shelf.findAll", query = "SELECT s FROM Shelf s"),
-    @NamedQuery(name = "Shelf.findById", query = "SELECT s FROM Shelf s WHERE s.id = :id"),
-    @NamedQuery(name = "Shelf.findByName", query = "SELECT s FROM Shelf s WHERE s.name = :name")})
-public class Shelf implements Serializable {
+    @NamedQuery(name = "RentQueue.findAll", query = "SELECT r FROM RentQueue r"),
+    @NamedQuery(name = "RentQueue.findById", query = "SELECT r FROM RentQueue r WHERE r.id = :id"),
+    @NamedQuery(name = "RentQueue.findByQueueNr", query = "SELECT r FROM RentQueue r WHERE r.queueNr = :queueNr")})
+public class RentQueue implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -45,24 +43,25 @@ public class Shelf implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-    @Lob
-    @Column(name = "description")
-    private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shelfId")
-    private Collection<Bookshelf> bookshelfCollection;
+    @Column(name = "queueNr")
+    private int queueNr;
+    @JoinColumn(name = "ISBN", referencedColumnName = "ISBN")
+    @ManyToOne(optional = false)
+    private Book isbn;
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private User userId;
 
-    public Shelf() {
+    public RentQueue() {
     }
 
-    public Shelf(Integer id) {
+    public RentQueue(Integer id) {
         this.id = id;
     }
 
-    public Shelf(Integer id, String name) {
+    public RentQueue(Integer id, int queueNr) {
         this.id = id;
-        this.name = name;
+        this.queueNr = queueNr;
     }
 
     public Integer getId() {
@@ -75,24 +74,34 @@ public class Shelf implements Serializable {
         changeSupport.firePropertyChange("id", oldId, id);
     }
 
-    public String getName() {
-        return name;
+    public int getQueueNr() {
+        return queueNr;
     }
 
-    public void setName(String name) {
-        String oldName = this.name;
-        this.name = name;
-        changeSupport.firePropertyChange("name", oldName, name);
+    public void setQueueNr(int queueNr) {
+        int oldQueueNr = this.queueNr;
+        this.queueNr = queueNr;
+        changeSupport.firePropertyChange("queueNr", oldQueueNr, queueNr);
     }
 
-    public String getDescription() {
-        return description;
+    public Book getIsbn() {
+        return isbn;
     }
 
-    public void setDescription(String description) {
-        String oldDescription = this.description;
-        this.description = description;
-        changeSupport.firePropertyChange("description", oldDescription, description);
+    public void setIsbn(Book isbn) {
+        Book oldIsbn = this.isbn;
+        this.isbn = isbn;
+        changeSupport.firePropertyChange("isbn", oldIsbn, isbn);
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        User oldUserId = this.userId;
+        this.userId = userId;
+        changeSupport.firePropertyChange("userId", oldUserId, userId);
     }
 
     @Override
@@ -105,10 +114,10 @@ public class Shelf implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Shelf)) {
+        if (!(object instanceof RentQueue)) {
             return false;
         }
-        Shelf other = (Shelf) object;
+        RentQueue other = (RentQueue) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -117,15 +126,7 @@ public class Shelf implements Serializable {
 
     @Override
     public String toString() {
-        return "BLL.Shelf[ id=" + id + " ]";
-    }
-
-    public Collection<Bookshelf> getBookshelfCollection() {
-        return bookshelfCollection;
-    }
-
-    public void setBookshelfCollection(Collection<Bookshelf> bookshelfCollection) {
-        this.bookshelfCollection = bookshelfCollection;
+        return "BLL.RentQueue[ id=" + id + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

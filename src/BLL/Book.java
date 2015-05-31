@@ -73,7 +73,7 @@ public class Book implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "isbn")
     private List<Bookshelf> bookshelfList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "isbn")
-    private List<Rentqueue> rentqueueList;
+    private List<RentQueue> rentqueueList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "isbn")
     private List<Rent> rentList;
 
@@ -182,11 +182,11 @@ public class Book implements Serializable {
     }
 
     @XmlTransient
-    public List<Rentqueue> getRentqueueList() {
+    public List<RentQueue> getRentqueueList() {
         return rentqueueList;
     }
 
-    public void setRentqueueList(List<Rentqueue> rentqueueList) {
+    public void setRentqueueList(List<RentQueue> rentqueueList) {
         this.rentqueueList = rentqueueList;
     }
 

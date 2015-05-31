@@ -117,6 +117,10 @@ public class Library extends JPanel {
         atuhorRentQueueField = new javax.swing.JTextField();
         usernameRentQueueField = new javax.swing.JTextField();
         saveRentButton1 = new javax.swing.JButton();
+        rentQueueQuery = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT r FROM Rentqueue r");
+        rentQueueList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
+        shelvesQuery = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT s FROM Shelf s");
+        shelvesList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
         jTabbedPane = new javax.swing.JTabbedPane();
         jPanelBooks = new javax.swing.JPanel();
         masterScrollPane = new javax.swing.JScrollPane();
@@ -125,13 +129,24 @@ public class Library extends JPanel {
         deleteButton = new javax.swing.JButton();
         rentButton = new javax.swing.JButton();
         rentQueueButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanelUsers = new javax.swing.JPanel();
         masterScrollPane4 = new javax.swing.JScrollPane();
         masterTable2 = new javax.swing.JTable();
         addUserButton = new javax.swing.JButton();
         deleteUserButton = new javax.swing.JButton();
         jPanelShelves = new javax.swing.JPanel();
+        masterScrollPane5 = new javax.swing.JScrollPane();
+        shelvesTable = new javax.swing.JTable();
+        newShelfButton = new javax.swing.JButton();
+        deleteShelfButton = new javax.swing.JButton();
+        detailScrollPane = new javax.swing.JScrollPane();
+        bookShelfTable = new javax.swing.JTable();
         jPanelRentQueue = new javax.swing.JPanel();
+        masterScrollPane3 = new javax.swing.JScrollPane();
+        rentQueueTable = new javax.swing.JTable();
+        newRentQueueButton = new javax.swing.JButton();
+        deleteRentQueueButton = new javax.swing.JButton();
         jPanelEvents = new javax.swing.JPanel();
         masterScrollPane1 = new javax.swing.JScrollPane();
         upcomingEventsTable = new javax.swing.JTable();
@@ -639,6 +654,9 @@ public class Library extends JPanel {
 
         rentQueueButton.setText("Queue Rent");
 
+        jButton1.setText("Switch Shelf");
+        jButton1.addActionListener(formListener);
+
         javax.swing.GroupLayout jPanelBooksLayout = new javax.swing.GroupLayout(jPanelBooks);
         jPanelBooks.setLayout(jPanelBooksLayout);
         jPanelBooksLayout.setHorizontalGroup(
@@ -649,6 +667,8 @@ public class Library extends JPanel {
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBooksLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rentQueueButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -671,7 +691,8 @@ public class Library extends JPanel {
                     .addComponent(newButton)
                     .addComponent(deleteButton)
                     .addComponent(rentButton)
-                    .addComponent(rentQueueButton))
+                    .addComponent(rentQueueButton)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -714,30 +735,98 @@ public class Library extends JPanel {
 
         jTabbedPane.addTab("Users", jPanelUsers);
 
+        masterScrollPane5.setViewportView(shelvesTable);
+
+        newShelfButton.setText("New");
+        newShelfButton.addActionListener(formListener);
+
+        deleteShelfButton.setText("Delete");
+        deleteShelfButton.addActionListener(formListener);
+
+        detailScrollPane.setViewportView(bookShelfTable);
+
         javax.swing.GroupLayout jPanelShelvesLayout = new javax.swing.GroupLayout(jPanelShelves);
         jPanelShelves.setLayout(jPanelShelvesLayout);
         jPanelShelvesLayout.setHorizontalGroup(
             jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1046, Short.MAX_VALUE)
+            .addGroup(jPanelShelvesLayout.createSequentialGroup()
+                .addGroup(jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelShelvesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(newShelfButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteShelfButton))
+                    .addGroup(jPanelShelvesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(masterScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+                            .addComponent(detailScrollPane))))
+                .addContainerGap())
         );
         jPanelShelvesLayout.setVerticalGroup(
             jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGroup(jPanelShelvesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(masterScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteShelfButton)
+                    .addComponent(newShelfButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(detailScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane.addTab("Shelves", jPanelShelves);
 
         jPanelRentQueue.setAutoscrolls(true);
 
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rentQueueList, rentQueueTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${userId}"));
+        columnBinding.setColumnName("User Id");
+        columnBinding.setColumnClass(BLL.User.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${isbn}"));
+        columnBinding.setColumnName("Isbn");
+        columnBinding.setColumnClass(BLL.Book.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${queueNr}"));
+        columnBinding.setColumnName("Queue Nr");
+        columnBinding.setColumnClass(Integer.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+
+        masterScrollPane3.setViewportView(rentQueueTable);
+
+        newRentQueueButton.setText("New");
+        newRentQueueButton.addActionListener(formListener);
+
+        deleteRentQueueButton.setText("Delete");
+        deleteRentQueueButton.addActionListener(formListener);
+
         javax.swing.GroupLayout jPanelRentQueueLayout = new javax.swing.GroupLayout(jPanelRentQueue);
         jPanelRentQueue.setLayout(jPanelRentQueueLayout);
         jPanelRentQueueLayout.setHorizontalGroup(
             jPanelRentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1046, Short.MAX_VALUE)
+            .addGroup(jPanelRentQueueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelRentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(masterScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRentQueueLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(newRentQueueButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deleteRentQueueButton)))
+                .addContainerGap())
         );
         jPanelRentQueueLayout.setVerticalGroup(
             jPanelRentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGroup(jPanelRentQueueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(masterScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelRentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteRentQueueButton)
+                    .addComponent(newRentQueueButton))
+                .addContainerGap())
         );
 
         jTabbedPane.addTab("Rent Queue", jPanelRentQueue);
@@ -885,6 +974,21 @@ public class Library extends JPanel {
             }
             else if (evt.getSource() == saveRentButton1) {
                 Library.this.saveRentButton1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == newRentQueueButton) {
+                Library.this.newRentQueueButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == deleteRentQueueButton) {
+                Library.this.deleteRentQueueButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == newShelfButton) {
+                Library.this.newShelfButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == deleteShelfButton) {
+                Library.this.deleteShelfButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == jButton1) {
+                Library.this.SwitchShelfActionPerform(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -1068,6 +1172,50 @@ public class Library extends JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveRentButton1ActionPerformed
 
+    private void newRentQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newRentQueueButtonActionPerformed
+        BLL.RentQueue r = new BLL.RentQueue();
+        entityManager.persist(r);
+        rentQueueList.add(r);
+        int row = rentQueueList.size() - 1;
+        masterTable.setRowSelectionInterval(row, row);
+        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+    }//GEN-LAST:event_newRentQueueButtonActionPerformed
+
+    private void deleteRentQueueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRentQueueButtonActionPerformed
+        int[] selected = masterTable.getSelectedRows();
+        List<BLL.RentQueue> toRemove = new ArrayList<BLL.RentQueue>(selected.length);
+        for (int idx = 0; idx < selected.length; idx++) {
+            BLL.RentQueue r = rentQueueList.get(masterTable.convertRowIndexToModel(selected[idx]));
+            toRemove.add(r);
+            entityManager.remove(r);
+        }
+        rentQueueList.removeAll(toRemove);
+    }//GEN-LAST:event_deleteRentQueueButtonActionPerformed
+
+    private void newShelfButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newShelfButtonActionPerformed
+        BLL.Shelf s = new BLL.Shelf();
+        entityManager.persist(s);
+        shelvesList.add(s);
+        int row = shelvesList.size() - 1;
+        shelvesTable.setRowSelectionInterval(row, row);
+        shelvesTable.scrollRectToVisible(shelvesTable.getCellRect(row, 0, true));
+    }//GEN-LAST:event_newShelfButtonActionPerformed
+
+    private void deleteShelfButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteShelfButtonActionPerformed
+        int[] selected = shelvesTable.getSelectedRows();
+        List<BLL.Shelf> toRemove = new ArrayList<BLL.Shelf>(selected.length);
+        for (int idx = 0; idx < selected.length; idx++) {
+            BLL.Shelf s = shelvesList.get(shelvesTable.convertRowIndexToModel(selected[idx]));
+            toRemove.add(s);
+            entityManager.remove(s);
+        }
+        shelvesList.removeAll(toRemove);
+    }//GEN-LAST:event_deleteShelfButtonActionPerformed
+
+    private void SwitchShelfActionPerform(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SwitchShelfActionPerform
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SwitchShelfActionPerform
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddBook;
@@ -1084,15 +1232,19 @@ public class Library extends JPanel {
     private javax.swing.JLabel authorRentLabel;
     private javax.swing.JLabel authorRentQueueLabel;
     private javax.persistence.Query bookListQuery;
+    private javax.swing.JTable bookShelfTable;
     private javax.swing.JButton btnAddEvent;
     private javax.swing.JButton btnDeleteEvent;
     private javax.swing.JLabel dateEventLabel;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton deleteRentQueueButton;
+    private javax.swing.JButton deleteShelfButton;
     private javax.swing.JButton deleteUserButton;
     private javax.swing.JTextField descriptionEventField;
     private javax.swing.JLabel descriptionEventLabel;
     private javax.swing.JTextField descriptionField;
     private javax.swing.JLabel descriptionLabel;
+    private javax.swing.JScrollPane detailScrollPane;
     private javax.persistence.EntityManager entityManager;
     private GUI.helpers.DateTimePicker eventDateTimePicker;
     private javax.swing.JTextField isbnField;
@@ -1101,6 +1253,7 @@ public class Library extends JPanel {
     private javax.swing.JLabel isbnRentLabel;
     private javax.swing.JTextField isbnRentQueueField;
     private javax.swing.JLabel isbnRentQueueLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanelBooks;
     private javax.swing.JPanel jPanelEvents;
     private javax.swing.JPanel jPanelRentQueue;
@@ -1118,12 +1271,16 @@ public class Library extends JPanel {
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JScrollPane masterScrollPane1;
     private javax.swing.JScrollPane masterScrollPane2;
+    private javax.swing.JScrollPane masterScrollPane3;
     private javax.swing.JScrollPane masterScrollPane4;
+    private javax.swing.JScrollPane masterScrollPane5;
     private javax.swing.JTable masterTable;
     private javax.swing.JTable masterTable2;
     private javax.swing.JTextField nameEventField;
     private javax.swing.JLabel nameEventLabel;
     private javax.swing.JButton newButton;
+    private javax.swing.JButton newRentQueueButton;
+    private javax.swing.JButton newShelfButton;
     private javax.swing.JTextField nrPagesField;
     private javax.swing.JLabel nrPagesLabel;
     private java.util.List<BLL.Event> pastEventsList;
@@ -1135,6 +1292,9 @@ public class Library extends JPanel {
     private javax.swing.JLabel publisherLabel;
     private javax.swing.JButton rentButton;
     private javax.swing.JButton rentQueueButton;
+    private java.util.List<BLL.RentQueue> rentQueueList;
+    private javax.persistence.Query rentQueueQuery;
+    private javax.swing.JTable rentQueueTable;
     private javax.swing.JLabel rentStartDateLabel;
     private javax.swing.JButton savaShelfButton;
     private javax.swing.JButton saveButton;
@@ -1146,6 +1306,9 @@ public class Library extends JPanel {
     private javax.swing.JLabel shelfDescriptionLabel;
     private javax.swing.JTextField shelfNameField;
     private javax.swing.JLabel shelfNameLabel;
+    private java.util.List<BLL.Shelf> shelvesList;
+    private javax.persistence.Query shelvesQuery;
+    private javax.swing.JTable shelvesTable;
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel titleRebtLabel;

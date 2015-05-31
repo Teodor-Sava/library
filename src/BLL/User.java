@@ -60,7 +60,7 @@ public class User implements Serializable {
     @Column(name = "telephone")
     private String telephone;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private List<Rentqueue> rentqueueList;
+    private List<RentQueue> rentqueueList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Rent> rentList;
 
@@ -130,11 +130,11 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public List<Rentqueue> getRentqueueList() {
+    public List<RentQueue> getRentqueueList() {
         return rentqueueList;
     }
 
-    public void setRentqueueList(List<Rentqueue> rentqueueList) {
+    public void setRentqueueList(List<RentQueue> rentqueueList) {
         this.rentqueueList = rentqueueList;
     }
 
