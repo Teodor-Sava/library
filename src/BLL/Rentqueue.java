@@ -5,6 +5,8 @@
  */
 package BLL;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Rentqueue.findById", query = "SELECT r FROM Rentqueue r WHERE r.id = :id"),
     @NamedQuery(name = "Rentqueue.findByQueueNr", query = "SELECT r FROM Rentqueue r WHERE r.queueNr = :queueNr")})
 public class Rentqueue implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +69,9 @@ public class Rentqueue implements Serializable {
     }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public int getQueueNr() {
@@ -72,7 +79,9 @@ public class Rentqueue implements Serializable {
     }
 
     public void setQueueNr(int queueNr) {
+        int oldQueueNr = this.queueNr;
         this.queueNr = queueNr;
+        changeSupport.firePropertyChange("queueNr", oldQueueNr, queueNr);
     }
 
     public Book getIsbn() {
@@ -80,7 +89,9 @@ public class Rentqueue implements Serializable {
     }
 
     public void setIsbn(Book isbn) {
+        Book oldIsbn = this.isbn;
         this.isbn = isbn;
+        changeSupport.firePropertyChange("isbn", oldIsbn, isbn);
     }
 
     public User getUserId() {
@@ -88,7 +99,9 @@ public class Rentqueue implements Serializable {
     }
 
     public void setUserId(User userId) {
+        User oldUserId = this.userId;
         this.userId = userId;
+        changeSupport.firePropertyChange("userId", oldUserId, userId);
     }
 
     @Override
@@ -114,6 +127,14 @@ public class Rentqueue implements Serializable {
     @Override
     public String toString() {
         return "BLL.Rentqueue[ id=" + id + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

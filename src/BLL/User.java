@@ -5,6 +5,8 @@
  */
 package BLL;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
     @NamedQuery(name = "User.findByTelephone", query = "SELECT u FROM User u WHERE u.telephone = :telephone")})
 public class User implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,7 +84,9 @@ public class User implements Serializable {
     }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getName() {
@@ -87,7 +94,9 @@ public class User implements Serializable {
     }
 
     public void setName(String name) {
+        String oldName = this.name;
         this.name = name;
+        changeSupport.firePropertyChange("name", oldName, name);
     }
 
     public String getCpr() {
@@ -95,7 +104,9 @@ public class User implements Serializable {
     }
 
     public void setCpr(String cpr) {
+        String oldCpr = this.cpr;
         this.cpr = cpr;
+        changeSupport.firePropertyChange("cpr", oldCpr, cpr);
     }
 
     public String getAddress() {
@@ -103,7 +114,9 @@ public class User implements Serializable {
     }
 
     public void setAddress(String address) {
+        String oldAddress = this.address;
         this.address = address;
+        changeSupport.firePropertyChange("address", oldAddress, address);
     }
 
     public String getTelephone() {
@@ -111,7 +124,9 @@ public class User implements Serializable {
     }
 
     public void setTelephone(String telephone) {
+        String oldTelephone = this.telephone;
         this.telephone = telephone;
+        changeSupport.firePropertyChange("telephone", oldTelephone, telephone);
     }
 
     @XmlTransient
@@ -155,6 +170,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "BLL.User[ id=" + id + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

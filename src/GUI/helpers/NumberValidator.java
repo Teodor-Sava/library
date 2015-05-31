@@ -21,7 +21,7 @@ public class NumberValidator extends InputVerifier {
         String text = ((JTextField) input).getText();
         try {
             int value = Integer.parseInt(text);
-            return (value > 0);
+            return (value >= 0);
         } catch (Exception e) {
             return false;
         }

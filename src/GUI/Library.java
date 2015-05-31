@@ -23,8 +23,8 @@ import javax.swing.JPanel;
  *
  * @author Live
  */
-public class Library extends JPanel {    
-    
+public class Library extends JPanel {
+
     public Library() {
         initComponents();
         if (!Beans.isDesignTime()) {
@@ -57,27 +57,90 @@ public class Library extends JPanel {
         isbnField = new javax.swing.JTextField();
         titleField = new javax.swing.JTextField();
         authorField = new javax.swing.JTextField();
-        publishDateField = new javax.swing.JTextField();
         nrPagesField = new javax.swing.JTextField();
         publisherField = new javax.swing.JTextField();
         languageField = new javax.swing.JTextField();
         descriptionField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
-        eventQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Event e");
-        eventList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : eventQuery.getResultList();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        jXDatePicker = new org.jdesktop.swingx.JXDatePicker();
+        upcomingEventsQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Event e WHERE e.date> CURRENT_TIMESTAMP");
+        upcomingEventsList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : upcomingEventsQuery.getResultList();
+        pastEventsQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Event e WHERE e.date< CURRENT_TIMESTAMP");
+        pastEventsList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : pastEventsQuery.getResultList();
+        AddEvent = new javax.swing.JDialog();
+        nameEventLabel = new javax.swing.JLabel();
+        dateEventLabel = new javax.swing.JLabel();
+        descriptionEventLabel = new javax.swing.JLabel();
+        nameEventField = new javax.swing.JTextField();
+        descriptionEventField = new javax.swing.JTextField();
+        saveEventButton = new javax.swing.JButton();
+        eventDateTimePicker = new GUI.helpers.DateTimePicker();
+        userQuery = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("SELECT u FROM User u");
+        userList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(((javax.persistence.Query)null).getResultList());
+        AddUser = new javax.swing.JDialog();
+        userNameLabel = new javax.swing.JLabel();
+        userAddressLabel = new javax.swing.JLabel();
+        userCprLabel = new javax.swing.JLabel();
+        userPhoneNoLabel = new javax.swing.JLabel();
+        userNameField = new javax.swing.JTextField();
+        userAddressField = new javax.swing.JTextField();
+        userCprField = new javax.swing.JTextField();
+        userPhoneNoField = new javax.swing.JTextField();
+        saveButton1 = new javax.swing.JButton();
+        AddShelf = new javax.swing.JDialog();
+        shelfNameLabel = new javax.swing.JLabel();
+        shelfDescriptionLabel = new javax.swing.JLabel();
+        shelfNameField = new javax.swing.JTextField();
+        shelfDescriptionField = new javax.swing.JTextField();
+        savaShelfButton = new javax.swing.JButton();
+        RentBook = new javax.swing.JDialog();
+        isbnRentLabel = new javax.swing.JLabel();
+        authorRentLabel = new javax.swing.JLabel();
+        titleRebtLabel = new javax.swing.JLabel();
+        rentStartDateLabel = new javax.swing.JLabel();
+        usernameRebtLabel = new javax.swing.JLabel();
+        isbnRentField = new javax.swing.JTextField();
+        titleRentField = new javax.swing.JTextField();
+        authorRebtField = new javax.swing.JTextField();
+        usernameRentField = new javax.swing.JTextField();
+        saveRentButton = new javax.swing.JButton();
+        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        publishDateLabel2 = new javax.swing.JLabel();
+        jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
+        RentQueue = new javax.swing.JDialog();
+        isbnRentQueueLabel = new javax.swing.JLabel();
+        authorRentQueueLabel = new javax.swing.JLabel();
+        titleRentQueueLabel = new javax.swing.JLabel();
+        usernameRentQueueLabel = new javax.swing.JLabel();
+        isbnRentQueueField = new javax.swing.JTextField();
+        titleRentQueueField = new javax.swing.JTextField();
+        atuhorRentQueueField = new javax.swing.JTextField();
+        usernameRentQueueField = new javax.swing.JTextField();
+        saveRentButton1 = new javax.swing.JButton();
+        jTabbedPane = new javax.swing.JTabbedPane();
+        jPanelBooks = new javax.swing.JPanel();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        rentButton = new javax.swing.JButton();
+        rentQueueButton = new javax.swing.JButton();
+        jPanelUsers = new javax.swing.JPanel();
+        masterScrollPane4 = new javax.swing.JScrollPane();
+        masterTable2 = new javax.swing.JTable();
+        addUserButton = new javax.swing.JButton();
+        deleteUserButton = new javax.swing.JButton();
+        jPanelShelves = new javax.swing.JPanel();
+        jPanelRentQueue = new javax.swing.JPanel();
+        jPanelEvents = new javax.swing.JPanel();
         masterScrollPane1 = new javax.swing.JScrollPane();
-        masterTable1 = new javax.swing.JTable();
+        upcomingEventsTable = new javax.swing.JTable();
         lnlUpcomingEvents = new javax.swing.JLabel();
         btnAddEvent = new javax.swing.JButton();
         btnDeleteEvent = new javax.swing.JButton();
+        masterScrollPane2 = new javax.swing.JScrollPane();
+        pastEventsTable = new javax.swing.JTable();
+        lnlUpcomingEvents1 = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -130,12 +193,14 @@ public class Library extends JPanel {
                         .addGroup(AddBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                             .addComponent(authorField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                            .addComponent(publishDateField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                             .addComponent(nrPagesField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                             .addComponent(publisherField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                             .addComponent(languageField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                             .addComponent(descriptionField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                            .addComponent(isbnField)))
+                            .addComponent(isbnField)
+                            .addGroup(AddBookLayout.createSequentialGroup()
+                                .addComponent(jXDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddBookLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(saveButton)))
@@ -159,7 +224,7 @@ public class Library extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(AddBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(publishDateLabel)
-                    .addComponent(publishDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jXDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(AddBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nrPagesLabel)
@@ -178,7 +243,356 @@ public class Library extends JPanel {
                     .addComponent(descriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saveButton)
+                .addContainerGap(87, Short.MAX_VALUE))
+        );
+
+        AddEvent.setTitle("Add Event");
+        AddEvent.setAlwaysOnTop(true);
+        AddEvent.setLocationByPlatform(true);
+        AddEvent.setMinimumSize(new java.awt.Dimension(421, 420));
+        AddEvent.setName("dialogAddBook"); // NOI18N
+        AddEvent.setPreferredSize(new java.awt.Dimension(421, 420));
+        AddEvent.setSize(new java.awt.Dimension(421, 420));
+        AddEvent.setType(java.awt.Window.Type.UTILITY);
+
+        nameEventLabel.setText("Name:");
+
+        dateEventLabel.setText("Date:");
+
+        descriptionEventLabel.setText("Description:");
+
+        saveEventButton.setText("Save");
+        saveEventButton.addActionListener(formListener);
+
+        javax.swing.GroupLayout AddEventLayout = new javax.swing.GroupLayout(AddEvent.getContentPane());
+        AddEvent.getContentPane().setLayout(AddEventLayout);
+        AddEventLayout.setHorizontalGroup(
+            AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddEventLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddEventLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(saveEventButton))
+                    .addGroup(AddEventLayout.createSequentialGroup()
+                        .addComponent(descriptionEventLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(descriptionEventField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))
+                    .addGroup(AddEventLayout.createSequentialGroup()
+                        .addGroup(AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameEventLabel)
+                            .addComponent(dateEventLabel))
+                        .addGap(36, 36, 36)
+                        .addGroup(AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AddEventLayout.createSequentialGroup()
+                                .addComponent(eventDateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(nameEventField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        AddEventLayout.setVerticalGroup(
+            AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddEventLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameEventLabel)
+                    .addComponent(nameEventField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dateEventLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(eventDateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(AddEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(descriptionEventField, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(descriptionEventLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(saveEventButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        nameEventLabel.getAccessibleContext().setAccessibleName("Name:");
+
+        AddUser.setTitle("Add User");
+        AddUser.setAlwaysOnTop(true);
+        AddUser.setLocationByPlatform(true);
+        AddUser.setMinimumSize(new java.awt.Dimension(421, 555));
+        AddUser.setName("dialogAddBook"); // NOI18N
+        AddUser.setPreferredSize(new java.awt.Dimension(421, 555));
+        AddUser.setSize(new java.awt.Dimension(421, 555));
+        AddUser.setType(java.awt.Window.Type.UTILITY);
+
+        userNameLabel.setText("Name");
+
+        userAddressLabel.setText("Address");
+
+        userCprLabel.setText("CPR");
+
+        userPhoneNoLabel.setText("Phone no");
+
+        saveButton1.setText("Save");
+        saveButton1.addActionListener(formListener);
+
+        javax.swing.GroupLayout AddUserLayout = new javax.swing.GroupLayout(AddUser.getContentPane());
+        AddUser.getContentPane().setLayout(AddUserLayout);
+        AddUserLayout.setHorizontalGroup(
+            AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddUserLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AddUserLayout.createSequentialGroup()
+                        .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(userNameLabel)
+                            .addComponent(userAddressLabel)
+                            .addComponent(userPhoneNoLabel))
+                        .addGap(22, 22, 22)
+                        .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                            .addComponent(userAddressField, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                            .addGroup(AddUserLayout.createSequentialGroup()
+                                .addComponent(userPhoneNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddUserLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(saveButton1))
+                    .addGroup(AddUserLayout.createSequentialGroup()
+                        .addComponent(userCprLabel)
+                        .addGap(47, 47, 47)
+                        .addComponent(userCprField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        AddUserLayout.setVerticalGroup(
+            AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddUserLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userNameLabel)
+                    .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userAddressLabel)
+                    .addComponent(userAddressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(userCprLabel)
+                    .addComponent(userCprField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userPhoneNoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userPhoneNoLabel))
+                .addGap(58, 58, 58)
+                .addComponent(saveButton1)
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
+
+        AddShelf.setTitle("Add User");
+        AddShelf.setAlwaysOnTop(true);
+        AddShelf.setLocationByPlatform(true);
+        AddShelf.setMinimumSize(new java.awt.Dimension(421, 555));
+        AddShelf.setName("dialogAddBook"); // NOI18N
+        AddShelf.setSize(new java.awt.Dimension(421, 555));
+        AddShelf.setType(java.awt.Window.Type.UTILITY);
+
+        shelfNameLabel.setText("Name");
+
+        shelfDescriptionLabel.setText("Description");
+
+        savaShelfButton.setText("Save");
+        savaShelfButton.addActionListener(formListener);
+
+        javax.swing.GroupLayout AddShelfLayout = new javax.swing.GroupLayout(AddShelf.getContentPane());
+        AddShelf.getContentPane().setLayout(AddShelfLayout);
+        AddShelfLayout.setHorizontalGroup(
+            AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddShelfLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AddShelfLayout.createSequentialGroup()
+                        .addGroup(AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(shelfNameLabel)
+                            .addComponent(shelfDescriptionLabel))
+                        .addGap(22, 22, 22)
+                        .addGroup(AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(shelfNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                            .addComponent(shelfDescriptionField, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddShelfLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(savaShelfButton)))
+                .addContainerGap())
+        );
+        AddShelfLayout.setVerticalGroup(
+            AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddShelfLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shelfNameLabel)
+                    .addComponent(shelfNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AddShelfLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shelfDescriptionLabel)
+                    .addComponent(shelfDescriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(savaShelfButton)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        RentBook.setTitle("Rent Book");
+        RentBook.setAlwaysOnTop(true);
+        RentBook.setLocationByPlatform(true);
+        RentBook.setMinimumSize(new java.awt.Dimension(421, 555));
+        RentBook.setName("dialogAddBook"); // NOI18N
+        RentBook.setPreferredSize(new java.awt.Dimension(421, 555));
+        RentBook.setSize(new java.awt.Dimension(421, 555));
+        RentBook.setType(java.awt.Window.Type.UTILITY);
+
+        isbnRentLabel.setText("Isbn:");
+
+        authorRentLabel.setText("Author:");
+
+        titleRebtLabel.setText("Title:");
+
+        rentStartDateLabel.setText("Start Date :");
+
+        usernameRebtLabel.setText("Username");
+
+        saveRentButton.setText("Save");
+        saveRentButton.addActionListener(formListener);
+
+        publishDateLabel2.setText("Duet Date :");
+
+        javax.swing.GroupLayout RentBookLayout = new javax.swing.GroupLayout(RentBook.getContentPane());
+        RentBook.getContentPane().setLayout(RentBookLayout);
+        RentBookLayout.setHorizontalGroup(
+            RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RentBookLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(RentBookLayout.createSequentialGroup()
+                        .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(isbnRentLabel)
+                            .addComponent(titleRebtLabel)
+                            .addComponent(authorRentLabel)
+                            .addComponent(rentStartDateLabel)
+                            .addComponent(usernameRebtLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titleRentField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(authorRebtField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(usernameRentField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(isbnRentField)
+                            .addGroup(RentBookLayout.createSequentialGroup()
+                                .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(RentBookLayout.createSequentialGroup()
+                        .addComponent(publishDateLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RentBookLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(saveRentButton)))
+                .addContainerGap())
+        );
+        RentBookLayout.setVerticalGroup(
+            RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RentBookLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(isbnRentLabel)
+                    .addComponent(isbnRentField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleRebtLabel)
+                    .addComponent(titleRentField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(authorRentLabel)
+                    .addComponent(authorRebtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rentStartDateLabel)
+                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(publishDateLabel2)
+                    .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(RentBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameRentField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(usernameRebtLabel))
+                .addGap(42, 42, 42)
+                .addComponent(saveRentButton)
+                .addGap(22, 22, 22))
+        );
+
+        RentQueue.setTitle("Rent Queue");
+        RentQueue.setAlwaysOnTop(true);
+        RentQueue.setLocationByPlatform(true);
+        RentQueue.setMinimumSize(new java.awt.Dimension(421, 555));
+        RentQueue.setName("dialogAddBook"); // NOI18N
+        RentQueue.setPreferredSize(new java.awt.Dimension(421, 555));
+        RentQueue.setSize(new java.awt.Dimension(421, 555));
+        RentQueue.setType(java.awt.Window.Type.UTILITY);
+
+        isbnRentQueueLabel.setText("Isbn:");
+
+        authorRentQueueLabel.setText("Author:");
+
+        titleRentQueueLabel.setText("Title:");
+
+        usernameRentQueueLabel.setText("Username");
+
+        saveRentButton1.setText("Save");
+        saveRentButton1.addActionListener(formListener);
+
+        javax.swing.GroupLayout RentQueueLayout = new javax.swing.GroupLayout(RentQueue.getContentPane());
+        RentQueue.getContentPane().setLayout(RentQueueLayout);
+        RentQueueLayout.setHorizontalGroup(
+            RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RentQueueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(RentQueueLayout.createSequentialGroup()
+                        .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(isbnRentQueueLabel)
+                            .addComponent(titleRentQueueLabel)
+                            .addComponent(authorRentQueueLabel))
+                        .addGap(24, 24, 24)
+                        .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titleRentQueueField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(atuhorRentQueueField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(isbnRentQueueField)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RentQueueLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(saveRentButton1))
+                    .addGroup(RentQueueLayout.createSequentialGroup()
+                        .addComponent(usernameRentQueueLabel)
+                        .addGap(13, 13, 13)
+                        .addComponent(usernameRentQueueField, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        RentQueueLayout.setVerticalGroup(
+            RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RentQueueLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(isbnRentQueueLabel)
+                    .addComponent(isbnRentQueueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleRentQueueLabel)
+                    .addComponent(titleRentQueueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(authorRentQueueLabel)
+                    .addComponent(atuhorRentQueueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(RentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameRentQueueLabel)
+                    .addComponent(usernameRentQueueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63)
+                .addComponent(saveRentButton1)
+                .addGap(44, 44, 44))
         );
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listBooks, masterTable);
@@ -220,92 +634,193 @@ public class Library extends JPanel {
 
         deleteButton.addActionListener(formListener);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        rentButton.setText("Rent");
+        rentButton.addActionListener(formListener);
+
+        rentQueueButton.setText("Queue Rent");
+
+        javax.swing.GroupLayout jPanelBooksLayout = new javax.swing.GroupLayout(jPanelBooks);
+        jPanelBooks.setLayout(jPanelBooksLayout);
+        jPanelBooksLayout.setHorizontalGroup(
+            jPanelBooksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBooksLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelBooksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBooksLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(rentQueueButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)))
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton});
+        jPanelBooksLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton});
 
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanelBooksLayout.setVerticalGroup(
+            jPanelBooksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBooksLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelBooksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newButton)
-                    .addComponent(deleteButton))
+                    .addComponent(deleteButton)
+                    .addComponent(rentButton)
+                    .addComponent(rentQueueButton))
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Books", jPanel1);
+        jTabbedPane.addTab("Books", jPanelBooks);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        masterScrollPane4.setViewportView(masterTable2);
+
+        addUserButton.setText("New");
+        addUserButton.addActionListener(formListener);
+
+        deleteUserButton.setText("Delete");
+        deleteUserButton.addActionListener(formListener);
+
+        javax.swing.GroupLayout jPanelUsersLayout = new javax.swing.GroupLayout(jPanelUsers);
+        jPanelUsers.setLayout(jPanelUsersLayout);
+        jPanelUsersLayout.setHorizontalGroup(
+            jPanelUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUsersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelUsersLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addUserButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteUserButton))
+                    .addComponent(masterScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanelUsersLayout.setVerticalGroup(
+            jPanelUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUsersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(masterScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addUserButton)
+                    .addComponent(deleteUserButton))
+                .addContainerGap())
+        );
+
+        jTabbedPane.addTab("Users", jPanelUsers);
+
+        javax.swing.GroupLayout jPanelShelvesLayout = new javax.swing.GroupLayout(jPanelShelves);
+        jPanelShelves.setLayout(jPanelShelvesLayout);
+        jPanelShelvesLayout.setHorizontalGroup(
+            jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1046, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 685, Short.MAX_VALUE)
+        jPanelShelvesLayout.setVerticalGroup(
+            jPanelShelvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Users", jPanel2);
+        jTabbedPane.addTab("Shelves", jPanelShelves);
 
-        masterScrollPane1.setViewportView(masterTable1);
+        jPanelRentQueue.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jPanelRentQueueLayout = new javax.swing.GroupLayout(jPanelRentQueue);
+        jPanelRentQueue.setLayout(jPanelRentQueueLayout);
+        jPanelRentQueueLayout.setHorizontalGroup(
+            jPanelRentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1046, Short.MAX_VALUE)
+        );
+        jPanelRentQueueLayout.setVerticalGroup(
+            jPanelRentQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 696, Short.MAX_VALUE)
+        );
+
+        jTabbedPane.addTab("Rent Queue", jPanelRentQueue);
+
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, upcomingEventsList, upcomingEventsTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
+        columnBinding.setColumnName("Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
+        columnBinding.setColumnName("Description");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${date}"));
+        columnBinding.setColumnName("Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+
+        masterScrollPane1.setViewportView(upcomingEventsTable);
 
         lnlUpcomingEvents.setText("Upcoming events");
 
         btnAddEvent.setText("Add");
+        btnAddEvent.addActionListener(formListener);
 
         btnDeleteEvent.setText("Delete");
+        btnDeleteEvent.addActionListener(formListener);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, pastEventsList, pastEventsTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
+        columnBinding.setColumnName("Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
+        columnBinding.setColumnName("Description");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${date}"));
+        columnBinding.setColumnName("Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+
+        masterScrollPane2.setViewportView(pastEventsTable);
+
+        lnlUpcomingEvents1.setText("Past Events");
+
+        javax.swing.GroupLayout jPanelEventsLayout = new javax.swing.GroupLayout(jPanelEvents);
+        jPanelEvents.setLayout(jPanelEventsLayout);
+        jPanelEventsLayout.setHorizontalGroup(
+            jPanelEventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEventsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masterScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lnlUpcomingEvents)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanelEventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEventsLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAddEvent)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDeleteEvent)))
+                        .addComponent(btnDeleteEvent))
+                    .addComponent(masterScrollPane1)
+                    .addComponent(masterScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+                    .addGroup(jPanelEventsLayout.createSequentialGroup()
+                        .addGroup(jPanelEventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lnlUpcomingEvents)
+                            .addComponent(lnlUpcomingEvents1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        jPanelEventsLayout.setVerticalGroup(
+            jPanelEventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEventsLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(lnlUpcomingEvents)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(masterScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(masterScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelEventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddEvent)
                     .addComponent(btnDeleteEvent))
-                .addContainerGap(398, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addComponent(lnlUpcomingEvents1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(masterScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane2.addTab("Events", jPanel3);
+        jTabbedPane.addTab("Events", jPanelEvents);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -313,14 +828,14 @@ public class Library extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2)
+                .addComponent(jTabbedPane)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2)
+                .addComponent(jTabbedPane)
                 .addContainerGap())
         );
 
@@ -340,6 +855,36 @@ public class Library extends JPanel {
             }
             else if (evt.getSource() == saveButton) {
                 Library.this.saveButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnAddEvent) {
+                Library.this.btnAddEventActionPerformed(evt);
+            }
+            else if (evt.getSource() == saveEventButton) {
+                Library.this.saveEventButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnDeleteEvent) {
+                Library.this.btnDeleteEventActionPerformed(evt);
+            }
+            else if (evt.getSource() == addUserButton) {
+                Library.this.addUserButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == deleteUserButton) {
+                Library.this.deleteUserButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == saveButton1) {
+                Library.this.saveButton1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == savaShelfButton) {
+                Library.this.savaShelfButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == rentButton) {
+                Library.this.rentButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == saveRentButton) {
+                Library.this.saveRentButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == saveRentButton1) {
+                Library.this.saveRentButton1ActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -368,10 +913,10 @@ public class Library extends JPanel {
         b.setLanguage(languageField.getText());
         b.setNrPages(Integer.decode(nrPagesField.getText()));
         b.setDescription(descriptionField.getText());
-        b.setPublishDate(Date.valueOf(publishDateField.getText()));
+        b.setPublishDate(jXDatePicker.getDate());
         b.setPublisher(publisherField.getText());
         b.setTitle(titleField.getText());
-        
+
         //clear the dialog
         AddBook.setVisible(false);
         isbnField.setText("");
@@ -379,58 +924,251 @@ public class Library extends JPanel {
         languageField.setText("");
         nrPagesField.setText("");
         descriptionField.setText("");
-        publishDateField.setText("");
+        jXDatePicker.setDate(new java.util.Date());
         publisherField.setText("");
         titleField.setText("");
-        
+
         //persist object to database
         entityManager.persist(b);
-  
-        //update table
-        listBooks.add(b);
-        int row = listBooks.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
-        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+        try {
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            //update table
+            listBooks.add(b);
+            int row = listBooks.size() - 1;
+            masterTable.setRowSelectionInterval(row, row);
+            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+        } catch (RollbackException rex) {
+            rex.printStackTrace();
+            entityManager.getTransaction().begin();
+            List<BLL.Book> merged = new ArrayList<BLL.Book>(listBooks.size());
+            for (BLL.Book book : listBooks) {
+                merged.add(entityManager.merge(book));
+            }
+            listBooks.clear();
+            listBooks.addAll(merged);
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void btnAddEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEventActionPerformed
+        AddEvent.setVisible(true);
+    }//GEN-LAST:event_btnAddEventActionPerformed
+
+    private void saveEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveEventButtonActionPerformed
+        //create new object and populate it from the dialog
+        BLL.Event e = new BLL.Event();
+        e.setName(nameEventField.getText());
+        e.setDescription(descriptionEventField.getText());
+        e.setDate(eventDateTimePicker.getDate());
+        //clear the dialog
+        AddEvent.setVisible(false);
+        nameEventField.setText("");
+        descriptionEventField.setText("");
+        jXDatePicker.setDate(new java.util.Date());
+        //persist object to database
+        entityManager.persist(e);
+
+        try {
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+            //update table            
+            if (e.getDate().after(new java.util.Date())) {
+                upcomingEventsList.add(e);
+                int row = upcomingEventsList.size() - 1;
+                upcomingEventsTable.setRowSelectionInterval(row, row);
+                upcomingEventsTable.scrollRectToVisible(upcomingEventsTable.getCellRect(row, 0, true));
+            } else {
+                pastEventsList.add(e);
+                int row = pastEventsList.size() - 1;
+                pastEventsTable.setRowSelectionInterval(row, row);
+                pastEventsTable.scrollRectToVisible(pastEventsTable.getCellRect(row, 0, true));
+            }
+        } catch (RollbackException rex) {
+            rex.printStackTrace();
+            entityManager.getTransaction().begin();
+            if (e.getDate().after(new java.util.Date())) {
+                List<BLL.Event> merged = new ArrayList<BLL.Event>(upcomingEventsList.size());
+                for (BLL.Event event : upcomingEventsList) {
+                    merged.add(entityManager.merge(event));
+                }
+                upcomingEventsList.clear();
+                upcomingEventsList.addAll(merged);
+            } else {
+                List<BLL.Event> merged = new ArrayList<BLL.Event>(pastEventsList.size());
+                for (BLL.Event event : pastEventsList) {
+                    merged.add(entityManager.merge(event));
+                }
+                pastEventsList.clear();
+                pastEventsList.addAll(merged);
+            }
+        }
+    }//GEN-LAST:event_saveEventButtonActionPerformed
+
+    private void btnDeleteEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEventActionPerformed
+        int[] selected = upcomingEventsTable.getSelectedRows();
+        List<BLL.Event> toRemove = new ArrayList<BLL.Event>(selected.length);
+        for (int idx = 0; idx < selected.length; idx++) {
+            BLL.Event E = upcomingEventsList.get(upcomingEventsTable.convertRowIndexToModel(selected[idx]));
+            toRemove.add(E);
+            entityManager.remove(E);
+        }
+        upcomingEventsList.removeAll(toRemove);
+    }//GEN-LAST:event_btnDeleteEventActionPerformed
+
+    private void addUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserButtonActionPerformed
+        BLL.User u = new BLL.User();
+        entityManager.persist(u);
+        try {
+            userList.add(u);
+            int row = userList.size() - 1;
+            masterTable.setRowSelectionInterval(row, row);
+            masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+        } catch (RollbackException rex) {
+            rex.printStackTrace();
+            entityManager.getTransaction().begin();
+            List<BLL.User> merged = new ArrayList<BLL.User>(userList.size());
+            for (BLL.User user : userList) {
+                merged.add(entityManager.merge(user));
+            }
+            userList.clear();
+            userList.addAll(merged);
+        }
+    }//GEN-LAST:event_addUserButtonActionPerformed
+
+    private void deleteUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUserButtonActionPerformed
+        int[] selected = masterTable.getSelectedRows();
+        List<BLL.User> toRemove = new ArrayList<BLL.User>(selected.length);
+        for (int idx = 0; idx < selected.length; idx++) {
+            BLL.User u = userList.get(masterTable.convertRowIndexToModel(selected[idx]));
+            toRemove.add(u);
+            entityManager.remove(u);
+        }
+        userList.removeAll(toRemove);
+    }//GEN-LAST:event_deleteUserButtonActionPerformed
+
+    private void saveButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveButton1ActionPerformed
+
+    private void savaShelfButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savaShelfButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_savaShelfButtonActionPerformed
+
+    private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rentButtonActionPerformed
+
+    private void saveRentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveRentButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveRentButtonActionPerformed
+
+    private void saveRentButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveRentButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveRentButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddBook;
+    private javax.swing.JDialog AddEvent;
+    private javax.swing.JDialog AddShelf;
+    private javax.swing.JDialog AddUser;
+    private javax.swing.JDialog RentBook;
+    private javax.swing.JDialog RentQueue;
+    private javax.swing.JButton addUserButton;
+    private javax.swing.JTextField atuhorRentQueueField;
     private javax.swing.JTextField authorField;
     private javax.swing.JLabel authorLabel;
+    private javax.swing.JTextField authorRebtField;
+    private javax.swing.JLabel authorRentLabel;
+    private javax.swing.JLabel authorRentQueueLabel;
     private javax.persistence.Query bookListQuery;
     private javax.swing.JButton btnAddEvent;
     private javax.swing.JButton btnDeleteEvent;
+    private javax.swing.JLabel dateEventLabel;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton deleteUserButton;
+    private javax.swing.JTextField descriptionEventField;
+    private javax.swing.JLabel descriptionEventLabel;
     private javax.swing.JTextField descriptionField;
     private javax.swing.JLabel descriptionLabel;
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<BLL.Event> eventList;
-    private javax.persistence.Query eventQuery;
+    private GUI.helpers.DateTimePicker eventDateTimePicker;
     private javax.swing.JTextField isbnField;
     private javax.swing.JLabel isbnLabel;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextField isbnRentField;
+    private javax.swing.JLabel isbnRentLabel;
+    private javax.swing.JTextField isbnRentQueueField;
+    private javax.swing.JLabel isbnRentQueueLabel;
+    private javax.swing.JPanel jPanelBooks;
+    private javax.swing.JPanel jPanelEvents;
+    private javax.swing.JPanel jPanelRentQueue;
+    private javax.swing.JPanel jPanelShelves;
+    private javax.swing.JPanel jPanelUsers;
+    private javax.swing.JTabbedPane jTabbedPane;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
     private javax.swing.JTextField languageField;
     private javax.swing.JLabel languageLabel;
     private java.util.List<BLL.Book> listBooks;
     private javax.swing.JLabel lnlUpcomingEvents;
+    private javax.swing.JLabel lnlUpcomingEvents1;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JScrollPane masterScrollPane1;
+    private javax.swing.JScrollPane masterScrollPane2;
+    private javax.swing.JScrollPane masterScrollPane4;
     private javax.swing.JTable masterTable;
-    private javax.swing.JTable masterTable1;
+    private javax.swing.JTable masterTable2;
+    private javax.swing.JTextField nameEventField;
+    private javax.swing.JLabel nameEventLabel;
     private javax.swing.JButton newButton;
     private javax.swing.JTextField nrPagesField;
     private javax.swing.JLabel nrPagesLabel;
-    private javax.swing.JTextField publishDateField;
+    private java.util.List<BLL.Event> pastEventsList;
+    private javax.persistence.Query pastEventsQuery;
+    private javax.swing.JTable pastEventsTable;
     private javax.swing.JLabel publishDateLabel;
+    private javax.swing.JLabel publishDateLabel2;
     private javax.swing.JTextField publisherField;
     private javax.swing.JLabel publisherLabel;
+    private javax.swing.JButton rentButton;
+    private javax.swing.JButton rentQueueButton;
+    private javax.swing.JLabel rentStartDateLabel;
+    private javax.swing.JButton savaShelfButton;
     private javax.swing.JButton saveButton;
+    private javax.swing.JButton saveButton1;
+    private javax.swing.JButton saveEventButton;
+    private javax.swing.JButton saveRentButton;
+    private javax.swing.JButton saveRentButton1;
+    private javax.swing.JTextField shelfDescriptionField;
+    private javax.swing.JLabel shelfDescriptionLabel;
+    private javax.swing.JTextField shelfNameField;
+    private javax.swing.JLabel shelfNameLabel;
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel titleRebtLabel;
+    private javax.swing.JTextField titleRentField;
+    private javax.swing.JTextField titleRentQueueField;
+    private javax.swing.JLabel titleRentQueueLabel;
+    private java.util.List<BLL.Event> upcomingEventsList;
+    private javax.persistence.Query upcomingEventsQuery;
+    private javax.swing.JTable upcomingEventsTable;
+    private javax.swing.JTextField userAddressField;
+    private javax.swing.JLabel userAddressLabel;
+    private javax.swing.JTextField userCprField;
+    private javax.swing.JLabel userCprLabel;
+    private java.util.List<BLL.User> userList;
+    private javax.swing.JTextField userNameField;
+    private javax.swing.JLabel userNameLabel;
+    private javax.swing.JTextField userPhoneNoField;
+    private javax.swing.JLabel userPhoneNoLabel;
+    private javax.persistence.Query userQuery;
+    private javax.swing.JLabel usernameRebtLabel;
+    private javax.swing.JTextField usernameRentField;
+    private javax.swing.JTextField usernameRentQueueField;
+    private javax.swing.JLabel usernameRentQueueLabel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     public static void main(String[] args) {
